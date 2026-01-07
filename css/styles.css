@@ -1636,3 +1636,151 @@ body {
         display: block;
     }
 }
+
+/* ============================================
+   MOBILE OPTIMIZATIONS - AMORTIZATION TABLE
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Make table scrollable horizontally */
+    .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 calc(var(--spacing-lg) * -1);
+        padding: 0 var(--spacing-lg);
+    }
+    
+    /* Smaller table text on mobile */
+    .amortization-table {
+        font-size: 0.75rem;
+        min-width: 500px; /* Prevents squishing */
+    }
+    
+    .amortization-table th,
+    .amortization-table td {
+        padding: var(--spacing-sm) var(--spacing-xs);
+        white-space: nowrap;
+    }
+    
+    /* Compact header */
+    .section-header-small {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+    
+    .btn-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Stack buttons on mobile */
+    .amortization-table-container > div[style*="flex"] {
+        flex-direction: column !important;
+    }
+    
+    .amortization-table-container button {
+        width: 100% !important;
+        min-width: auto !important;
+    }
+    
+    /* Smaller action buttons */
+    .result-actions {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .result-actions button {
+        width: 100%;
+        font-size: 0.875rem;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small screens */
+    .amortization-table {
+        font-size: 0.6875rem;
+    }
+    
+    .amortization-table th,
+    .amortization-table td {
+        padding: var(--spacing-xs);
+    }
+    
+    /* Hide "Period" column on very small screens, show only icons */
+    .amortization-table th:first-child {
+        min-width: 60px;
+    }
+}
+
+/* Scroll indicator for table */
+.table-scroll::after {
+    content: '← Desliza →';
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: var(--spacing-sm);
+    opacity: 0.7;
+}
+
+.table-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+    background: var(--primary-400);
+    border-radius: 3px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-500);
+}
+
+/* Alternative: Card layout for mobile */
+@media (max-width: 640px) {
+    .amortization-table-mobile-cards {
+        display: block;
+    }
+    
+    .amortization-table {
+        display: none;
+    }
+    
+    .amortization-card {
+        background: var(--bg-secondary);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        border-left: 4px solid var(--primary-500);
+    }
+    
+    .amortization-card-row {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--spacing-xs) 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .amortization-card-row:last-child {
+        border-bottom: none;
+    }
+    
+    .amortization-card-label {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.8125rem;
+    }
+    
+    .amortization-card-value {
+        font-weight: 600;
+        color: var(--text-primary);
+        text-align: right;
+    }
+}
