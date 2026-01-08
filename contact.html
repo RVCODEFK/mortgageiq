@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MortgageIQ</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <div class="brand">
+                <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 1rem;">
+                    <div class="brand-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="12" fill="url(#gradient1)"/>
+                            <path d="M20 8L10 16V32H16V24H24V32H30V16L20 8Z" fill="white"/>
+                            <circle cx="32" cy="12" r="6" fill="#fbbf24"/>
+                            <text x="29" y="15.5" font-size="8" font-weight="bold" fill="#1f2937">IQ</text>
+                            <defs>
+                                <linearGradient id="gradient1" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" style="stop-color:#3b82f6"/>
+                                    <stop offset="100%" style="stop-color:#2563eb"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <h1 class="brand-name" style="font-size: 1.5rem; margin: 0;">MortgageIQ</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="nav-actions">
+                <a href="index.html" class="btn-secondary">← Back to Calculator</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" style="max-width: 800px; padding: 4rem 1rem; min-height: 70vh;">
+        <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 1rem;">Contact Us</h1>
+        <p style="font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 3rem;">Have questions, feedback, or suggestions? We'd love to hear from you!</p>
+
+        <section style="background: var(--bg-secondary); padding: 2rem; border-radius: var(--radius-lg); margin-bottom: 3rem; border: 2px solid var(--border-color);">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem;">Send Us a Message</h2>
+            
+            <form id="contactForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Name *</label>
+                    <input type="text" name="name" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; background: var(--bg-primary); color: var(--text-primary);">
+                </div>
+
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Email *</label>
+                    <input type="email" name="email" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; background: var(--bg-primary); color: var(--text-primary);">
+                </div>
+
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Subject *</label>
+                    <select name="subject" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; background: var(--bg-primary); color: var(--text-primary);">
+                        <option value="">Select a topic...</option>
+                        <option value="general">General Inquiry</option>
+                        <option value="bug">Report a Bug</option>
+                        <option value="feature">Feature Request</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="partnership">Partnership Opportunity</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Message *</label>
+                    <textarea name="message" required rows="6" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; resize: vertical; background: var(--bg-primary); color: var(--text-primary);"></textarea>
+                </div>
+
+                <button type="submit" class="btn-calculate" style="width: 100%; margin-top: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                    <span>Send Message</span>
+                </button>
+            </form>
+
+            <script>
+                document.getElementById('contactForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const data = Object.fromEntries(formData.entries());
+                    
+                    const subject = encodeURIComponent('MortgageIQ Contact: ' + data.subject);
+                    const body = encodeURIComponent(
+                        'Name: ' + data.name + '\n' +
+                        'Email: ' + data.email + '\n' +
+                        'Subject: ' + data.subject + '\n\n' +
+                        'Message:\n' + data.message
+                    );
+                    
+                    window.location.href = `mailto:contact@mortgageiq.com?subject=${subject}&body=${body}`;
+                });
+            </script>
+        </section>
+
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1.5rem;">Frequently Asked Questions</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--primary-600); margin-bottom: 0.5rem;">How accurate is the mortgage calculator?</h3>
+                    <p style="line-height: 1.7; color: var(--text-secondary);">Our calculator uses the standard mortgage amortization formula used by banks and financial institutions worldwide, providing bank-grade accuracy for all calculations.</p>
+                </div>
+
+                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--primary-600); margin-bottom: 0.5rem;">Is my financial data stored or shared?</h3>
+                    <p style="line-height: 1.7; color: var(--text-secondary);">No. All calculations happen in your browser using JavaScript. We don't collect, store, or share your financial information. Your privacy is 100% guaranteed. See our <a href="privacy-policy.html" style="color: var(--primary-600); text-decoration: underline;">Privacy Policy</a> for details.</p>
+                </div>
+
+                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--primary-600); margin-bottom: 0.5rem;">Can I use this calculator for professional purposes?</h3>
+                    <p style="line-height: 1.7; color: var(--text-secondary);">Absolutely! MortgageIQ is designed for homebuyers, real estate professionals, financial advisors, and anyone needing accurate mortgage calculations. The tool is free and has no usage limits.</p>
+                </div>
+
+                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--primary-600); margin-bottom: 0.5rem;">What currencies do you support?</h3>
+                    <p style="line-height: 1.7; color: var(--text-secondary);">We support 12+ international currencies including USD, EUR, GBP, CAD, AUD, JPY, CHF, MXN, BRL, COP, ARS, and CLP.</p>
+                </div>
+
+                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--primary-600); margin-bottom: 0.5rem;">Do you offer an API or embeddable widget?</h3>
+                    <p style="line-height: 1.7; color: var(--text-secondary);">We don't currently offer an API or widget, but this is on our roadmap. Contact us if you're interested in partnership opportunities.</p>
+                </div>
+            </div>
+        </section>
+
+        <div style="margin-top: 3rem; text-align: center; padding: 2.5rem; background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%); border-radius: var(--radius-lg); color: white;">
+            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Ready to Calculate?</h3>
+            <p style="margin-bottom: 1.5rem; opacity: 0.9;">Start planning your dream home with our free mortgage calculator</p>
+            <a href="index.html" class="btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; text-decoration: none; background: white; color: var(--primary-600); border: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+                    <line x1="8" y1="6" x2="16" y2="6"/>
+                    <line x1="8" y1="10" x2="16" y2="10"/>
+                    <line x1="8" y1="14" x2="16" y2="14"/>
+                </svg>
+                <span>Calculate Now</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">MortgageIQ</h3>
+                    <p class="footer-tagline">Smart financial decisions start here</p>
+                </div>
+                <div class="footer-links">
+                    <a href="about.html" class="footer-link">About Us</a>
+                    <span class="footer-separator">•</span>
+                    <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+                    <span class="footer-separator">•</span>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 MortgageIQ. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
