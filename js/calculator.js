@@ -163,10 +163,10 @@ class MortgageCalculator {
             });
         }
 
-        // Download schedule
+        // Download schedule (now Excel)
         if (this.elements.downloadSchedule) {
             this.elements.downloadSchedule.addEventListener('click', () => {
-                this.downloadSchedule();
+                this.downloadExcel();
             });
         }
 
@@ -492,29 +492,130 @@ class MortgageCalculator {
     }
 
     /**
-     * Download schedule as CSV
+     * Download schedule as Excel (.xls)
      */
-    downloadSchedule() {
+    downloadExcel() {
         if (this.amortizationSchedule.length === 0) {
             alert('Please calculate mortgage first');
             return;
         }
         
-        let csv = 'Month,Payment,Principal,Interest,Balance\n';
+        // Preparar datos con información del préstamo
+        const data = [
+            ['MortgageIQ - Amortization Schedule'],
+            ['Generated on: ' + new Date().toLocaleDateString()],
+            [''],
+            ['Loan Summary'],
+            ['Home Price:', CurrencyManager.format(this.homePrice, true)],
+            ['Down Payment:', CurrencyManager.format(this.downPayment, true)],
+            ['Loan Amount:', CurrencyManager.format(this.loanAmount, true)],
+            ['Interest Rate:', this.interestRate + '% APR'],
+            ['Loan Term:', this.loanTerm + ' years'],
+            ['Monthly Payment:', CurrencyManager.format(this.monthlyPayment, true)],
+            ['Total Interest:', CurrencyManager.format(this.totalInterest, true)],
+            ['Total Amount Paid:', CurrencyManager.format(this.totalPayments, true)],
+            [''],
+            ['Period', 'Payment', 'Principal', 'Interest', 'Remaining Balance']
+        ];
         
+        // Agregar filas de amortización
         this.amortizationSchedule.forEach(row => {
-            csv += `${row.month},${row.payment.toFixed(2)},${row.principal.toFixed(2)},${row.interest.toFixed(2)},${row.balance.toFixed(2)}\n`;
+            const isYear = row.month % 12 === 0;
+            const period = isYear ? `Year ${row.month / 12}` : `Month ${row.month}`;
+            data.push([
+                period,
+                CurrencyManager.currentSymbol + this.formatNumber(row.payment),
+                CurrencyManager.currentSymbol + this.formatNumber(row.principal),
+                CurrencyManager.currentSymbol + this.formatNumber(row.interest),
+                CurrencyManager.currentSymbol + this.formatNumber(row.balance)
+            ]);
         });
         
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        // Convertir a HTML table con estilos
+        let html = '<html><head><meta charset="utf-8"></head><body>';
+        html += '<table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;">';
+        
+        data.forEach((row, idx) => {
+            html += '<tr>';
+            row.forEach((cell, cellIdx) => {
+                let style = '';
+                let tag = 'td';
+                
+                // Título principal
+                if (idx === 0) {
+                    style = 'background:#3b82f6;color:white;font-weight:bold;font-size:16px;text-align:center;';
+                    html += `<${tag} colspan="5" style="${style}">${cell}</${tag}>`;
+                    return;
+                }
+                
+                // Fecha
+                if (idx === 1) {
+                    style = 'text-align:center;font-size:12px;color:#666;';
+                    html += `<${tag} colspan="5" style="${style}">${cell}</${tag}>`;
+                    return;
+                }
+                
+                // Sección título
+                if (idx === 3) {
+                    style = 'background:#f3f4f6;font-weight:bold;font-size:14px;';
+                    html += `<${tag} colspan="5" style="${style}">${cell}</${tag}>`;
+                    return;
+                }
+                
+                // Header de tabla
+                if (idx === 13) {
+                    tag = 'th';
+                    style = 'background:#3b82f6;color:white;font-weight:bold;text-align:center;';
+                }
+                
+                // Resumen del préstamo (labels)
+                if (idx >= 4 && idx <= 11 && cellIdx === 0) {
+                    style = 'font-weight:bold;background:#f9fafb;';
+                }
+                
+                // Resumen del préstamo (values)
+                if (idx >= 4 && idx <= 11 && cellIdx === 1) {
+                    style = 'text-align:right;';
+                }
+                
+                // Filas de año (cada 12 meses)
+                if (idx > 13 && (idx - 14) % 12 === 11) {
+                    style = 'background:#dbeafe;font-weight:bold;';
+                }
+                
+                // Alineación de números
+                if (idx > 13 && cellIdx > 0) {
+                    style += 'text-align:right;';
+                }
+                
+                html += `<${tag} style="${style}">${cell}</${tag}>`;
+            });
+            html += '</tr>';
+        });
+        
+        html += '</table></body></html>';
+        
+        // Crear archivo Excel
+        const blob = new Blob([html], {
+            type: 'application/vnd.ms-excel;charset=utf-8;'
+        });
+        
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `MortgageIQ_Amortization_${new Date().toISOString().split('T')[0]}.csv`;
+        link.download = `MortgageIQ_Amortization_${new Date().toISOString().split('T')[0]}.xls`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
+        
+        // Track event
+        if (window.MortgageIQApp && window.MortgageIQApp.trackEvent) {
+            window.MortgageIQApp.trackEvent('download_schedule', {
+                format: 'excel',
+                rows: this.amortizationSchedule.length
+            });
+        }
     }
 
     /**
