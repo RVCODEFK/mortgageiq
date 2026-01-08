@@ -1638,149 +1638,267 @@ body {
 }
 
 /* ============================================
-   MOBILE OPTIMIZATIONS - AMORTIZATION TABLE
+   AMORTIZATION SCHEDULE
    ============================================ */
 
-@media (max-width: 768px) {
-    /* Make table scrollable horizontally */
-    .table-scroll {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        margin: 0 calc(var(--spacing-lg) * -1);
-        padding: 0 var(--spacing-lg);
-    }
-    
-    /* Smaller table text on mobile */
-    .amortization-table {
-        font-size: 0.75rem;
-        min-width: 500px; /* Prevents squishing */
-    }
-    
-    .amortization-table th,
-    .amortization-table td {
-        padding: var(--spacing-sm) var(--spacing-xs);
-        white-space: nowrap;
-    }
-    
-    /* Compact header */
+.amortization-section {
+    margin-top: var(--spacing-xl);
+}
+
+.section-header-small {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-md);
+}
+
+.section-title-small {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.btn-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.875rem;
+}
+
+.btn-toggle:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-500);
+}
+
+.btn-toggle.active {
+    background: var(--primary-50);
+    border-color: var(--primary-500);
+    color: var(--primary-600);
+}
+
+[data-theme="dark"] .btn-toggle.active {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--primary-400);
+}
+
+.btn-toggle svg {
+    transition: transform 0.3s;
+}
+
+.btn-toggle.active svg {
+    transform: rotate(180deg);
+}
+
+/* Table Container */
+.amortization-table-container {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-top: var(--spacing-md);
+}
+
+.table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    max-height: 600px;
+    position: relative;
+}
+
+/* Table Styles */
+.amortization-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+}
+
+.amortization-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg-secondary);
+}
+
+.amortization-table th {
+    text-align: left;
+    padding: var(--spacing-md);
+    font-weight: 700;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
+    white-space: nowrap;
+}
+
+.amortization-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.amortization-table tbody tr:hover {
+    background: var(--bg-secondary);
+}
+
+.amortization-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Year highlight rows */
+.amortization-table tbody tr[style*="font-weight: 700"] {
+    background: var(--primary-50);
+}
+
+[data-theme="dark"] .amortization-table tbody tr[style*="font-weight: 700"] {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+/* Button group at bottom of table */
+.amortization-table-container > div[style*="flex"] {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: var(--bg-secondary);
+    border-top: 2px solid var(--border-color);
+}
+
+/* ============================================
+   MOBILE RESPONSIVE - AMORTIZATION
+   ============================================ */
+
+@media (max-width: 1024px) {
     .section-header-small {
         flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-md);
+        align-items: stretch;
     }
     
     .btn-toggle {
         width: 100%;
         justify-content: center;
     }
+}
+
+@media (max-width: 768px) {
+    /* Header */
+    .section-title-small {
+        font-size: 1.125rem;
+    }
     
-    /* Stack buttons on mobile */
+    /* Make table horizontally scrollable */
+    .table-scroll {
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    /* Compact table */
+    .amortization-table {
+        font-size: 0.8125rem;
+        min-width: 600px; /* Forces horizontal scroll */
+    }
+    
+    .amortization-table th,
+    .amortization-table td {
+        padding: var(--spacing-sm);
+        white-space: nowrap;
+    }
+    
+    .amortization-table th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Stack buttons vertically */
     .amortization-table-container > div[style*="flex"] {
-        flex-direction: column !important;
+        flex-direction: column;
+        padding: var(--spacing-md);
+        gap: var(--spacing-sm);
     }
     
     .amortization-table-container button {
         width: 100% !important;
-        min-width: auto !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 !important;
     }
     
-    /* Smaller action buttons */
-    .result-actions {
-        flex-direction: column;
-        gap: var(--spacing-sm);
+    /* Scroll indicator */
+    .table-scroll::before {
+        content: '👈 Desliza para ver más →';
+        display: block;
+        text-align: center;
+        padding: var(--spacing-sm);
+        background: var(--warning-100);
+        color: var(--warning-700);
+        font-size: 0.75rem;
+        font-weight: 600;
+        position: sticky;
+        left: 0;
+        z-index: 5;
     }
     
-    .result-actions button {
-        width: 100%;
-        font-size: 0.875rem;
-        padding: var(--spacing-sm) var(--spacing-md);
+    [data-theme="dark"] .table-scroll::before {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--warning-400);
     }
 }
 
 @media (max-width: 480px) {
     /* Extra small screens */
     .amortization-table {
-        font-size: 0.6875rem;
+        font-size: 0.75rem;
+        min-width: 500px;
     }
     
     .amortization-table th,
     .amortization-table td {
-        padding: var(--spacing-xs);
+        padding: var(--spacing-xs) 6px;
     }
     
-    /* Hide "Period" column on very small screens, show only icons */
-    .amortization-table th:first-child {
-        min-width: 60px;
+    .amortization-table th {
+        font-size: 0.6875rem;
+    }
+    
+    /* Abbreviate headers */
+    .amortization-table th:nth-child(1)::after { content: 'Per.'; }
+    .amortization-table th:nth-child(2)::after { content: 'Pay'; }
+    .amortization-table th:nth-child(3)::after { content: 'Prin.'; }
+    .amortization-table th:nth-child(4)::after { content: 'Int.'; }
+    .amortization-table th:nth-child(5)::after { content: 'Bal.'; }
+    
+    .amortization-table th:nth-child(1),
+    .amortization-table th:nth-child(2),
+    .amortization-table th:nth-child(3),
+    .amortization-table th:nth-child(4),
+    .amortization-table th:nth-child(5) {
+        font-size: 0;
     }
 }
 
-/* Scroll indicator for table */
-.table-scroll::after {
-    content: '← Desliza →';
-    display: block;
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-top: var(--spacing-sm);
-    opacity: 0.7;
-}
-
+/* Custom scrollbar for table */
 .table-scroll::-webkit-scrollbar {
-    height: 6px;
+    height: 8px;
 }
 
 .table-scroll::-webkit-scrollbar-track {
     background: var(--bg-secondary);
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 .table-scroll::-webkit-scrollbar-thumb {
     background: var(--primary-400);
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 .table-scroll::-webkit-scrollbar-thumb:hover {
     background: var(--primary-500);
-}
-
-/* Alternative: Card layout for mobile */
-@media (max-width: 640px) {
-    .amortization-table-mobile-cards {
-        display: block;
-    }
-    
-    .amortization-table {
-        display: none;
-    }
-    
-    .amortization-card {
-        background: var(--bg-secondary);
-        border-radius: var(--radius-md);
-        padding: var(--spacing-md);
-        margin-bottom: var(--spacing-md);
-        border-left: 4px solid var(--primary-500);
-    }
-    
-    .amortization-card-row {
-        display: flex;
-        justify-content: space-between;
-        padding: var(--spacing-xs) 0;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .amortization-card-row:last-child {
-        border-bottom: none;
-    }
-    
-    .amortization-card-label {
-        font-weight: 600;
-        color: var(--text-secondary);
-        font-size: 0.8125rem;
-    }
-    
-    .amortization-card-value {
-        font-weight: 600;
-        color: var(--text-primary);
-        text-align: right;
-    }
 }
