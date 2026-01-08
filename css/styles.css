@@ -1902,3 +1902,107 @@ body {
 .table-scroll::-webkit-scrollbar-thumb:hover {
     background: var(--primary-500);
 }
+
+/* ============================================
+   FIX: MOBILE TABLE HEADERS
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* FORCE show table headers on mobile */
+    .amortization-table thead {
+        display: table-header-group !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+    }
+    
+    .amortization-table thead tr {
+        display: table-row !important;
+    }
+    
+    .amortization-table thead th {
+        display: table-cell !important;
+        background: var(--primary-600) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        padding: var(--spacing-sm) 6px !important;
+        font-size: 0.75rem !important;
+        text-align: center !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+        white-space: nowrap !important;
+    }
+    
+    .amortization-table thead th:last-child {
+        border-right: none !important;
+    }
+    
+    /* Better cell spacing */
+    .amortization-table tbody td {
+        text-align: center !important;
+        padding: var(--spacing-sm) 4px !important;
+        font-size: 0.8125rem !important;
+    }
+    
+    /* First column (Period) - left aligned */
+    .amortization-table tbody td:first-child,
+    .amortization-table thead th:first-child {
+        text-align: left !important;
+        padding-left: var(--spacing-sm) !important;
+    }
+    
+    /* Last column (Balance) - right aligned */
+    .amortization-table tbody td:last-child,
+    .amortization-table thead th:last-child {
+        text-align: right !important;
+        padding-right: var(--spacing-sm) !important;
+    }
+    
+    /* Remove the scroll indicator that might be blocking */
+    .table-scroll::before {
+        display: none !important;
+    }
+    
+    /* Better table container */
+    .table-scroll {
+        max-height: 500px !important;
+        overflow-y: auto !important;
+        overflow-x: auto !important;
+        border-radius: var(--radius-md);
+    }
+    
+    /* Minimum table width for proper spacing */
+    .amortization-table {
+        min-width: 100% !important;
+        width: 100% !important;
+        table-layout: fixed !important;
+    }
+    
+    /* Column widths */
+    .amortization-table th:nth-child(1),
+    .amortization-table td:nth-child(1) { width: 20%; } /* Period */
+    
+    .amortization-table th:nth-child(2),
+    .amortization-table td:nth-child(2) { width: 18%; } /* Payment */
+    
+    .amortization-table th:nth-child(3),
+    .amortization-table td:nth-child(3) { width: 18%; } /* Principal */
+    
+    .amortization-table th:nth-child(4),
+    .amortization-table td:nth-child(4) { width: 18%; } /* Interest */
+    
+    .amortization-table th:nth-child(5),
+    .amortization-table td:nth-child(5) { width: 26%; } /* Balance */
+}
+
+@media (max-width: 480px) {
+    /* Extra small screens */
+    .amortization-table thead th {
+        font-size: 0.6875rem !important;
+        padding: var(--spacing-xs) 4px !important;
+    }
+    
+    .amortization-table tbody td {
+        font-size: 0.75rem !important;
+        padding: var(--spacing-xs) 4px !important;
+    }
+}
